@@ -2,8 +2,8 @@
   "name": "dt-tweets",
   "version": "1.0.0",
   "description": "",
-  "engines" : {
-    "node" : ">=8.9.4 <9.0"
+  "engines": {
+    "node": ">=8.9.4 <9.0"
   },
   "main": "index.js",
   "scripts": {
@@ -11,5 +11,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "glob": "^7.1.2"
+  }
 }
