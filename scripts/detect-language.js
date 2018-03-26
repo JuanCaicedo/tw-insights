@@ -12,9 +12,8 @@ const main = async () => {
   try {
     const rawTweets = await loadAllTweets()
     const tweets = addIdToAll(R.take(10, rawTweets))
-    const response = await getLanguages({ documents: tweets })
-    const { data: { documents: languages } } = response
-    console.log('pickLanguage(languages)', pickLanguage(languages))
+    const languages = await getLanguages({ documents: tweets })
+    console.log('languages', languages)
   } catch (err) {
     if (err.response) {
       console.error('err.response.data', err.response.data)

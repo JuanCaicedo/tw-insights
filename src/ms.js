@@ -8,7 +8,11 @@ const host = 'westus.api.cognitive.microsoft.com'
 const path = '/text/analytics/v2.0/languages'
 const url = `https://${host}${path}`
 
-const pickLanguages = R.pipe(R.prop('data'), R.prop('documents'))
+const pickLanguages = R.pipe(
+  R.prop('data'),
+  R.prop('documents'),
+  R.map(R.prop('detectedLanguages'))
+)
 
 const getLanguages = data => {
   return axios
