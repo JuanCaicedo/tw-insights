@@ -4,9 +4,11 @@ const R = require('ramda')
 const glob = require('glob')
 const globP = Bluebird.promisify(glob)
 
+const requireAll = R.map(require)
+
 const loadAllTweets = async () => {
   const files = await globP('./tw-data/data/js/tweets/*.js')
-  files.map(file => require(file))
+  requireAll(files)
 }
 
 const getTweetsCount = R.pipe(R.values, R.map(R.length), R.sum)
