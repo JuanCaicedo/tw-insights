@@ -5,7 +5,12 @@ const replay = require('replay')
 const { getLanguages } = require('../src/ms')
 const { logErr } = require('../src/logging')
 const { readJsonInput } = require('../src/read-json-input')
-const { mapIndexed, toStdOut, renameKeys } = require('../src/utils')
+const {
+  mapIndexed,
+  toStdOut,
+  renameKeys,
+  pickTopScore,
+} = require('../src/utils')
 
 const renameId = renameKeys({ id_str: 'id' })
 const sanitize = R.pipe(R.pick(['id_str', 'text']), renameId)
