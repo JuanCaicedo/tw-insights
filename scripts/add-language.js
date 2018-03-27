@@ -1,30 +1,14 @@
 const R = require('ramda')
-const oboe = require('oboe')
 const Bluebird = require('bluebird')
 const replay = require('replay')
 
 const { getLanguages } = require('../src/ms')
 const { logErr } = require('../src/logging')
+const { readJsonInput } = require('../src/read-json-input')
+
 const mapIndexed = R.addIndex(R.map)
 
 const toStdOut = R.pipe(JSON.stringify, console.log)
-
-const readStream = (input, max, cb) => {
-  let buffer = []
-  oboe(input)
-    .node('{text}', tweet => {
-      buffer.push(tweet)
-      if (buffer.length >= max) {
-        cb(buffer)
-        buffer = []
-      }
-    })
-    .fail(err => {
-      console.error('err', err)
-    })
-
-  input.on('end', () => cb(buffer))
-}
 
 const renameKeys = R.curry((keysMap, obj) =>
   R.reduce(
@@ -47,7 +31,7 @@ const addLanguage = tweets => languagesForTweets => {
 }
 
 const main = async () => {
-  readStream(process.stdin, 100, tweets => {
+  readJsonInput(process.stdin, 100, tweets => {
     const sanitized = R.map(sanitize, tweets)
     getLanguages({ documents: sanitized })
       .then(addLanguage(tweets))
