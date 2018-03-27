@@ -1,11 +1,11 @@
 import {Command, flags} from '@oclif/command'
 
-export default class Hello extends Command {
+export default class AddLanguages extends Command {
   static description = 'describe the command here'
 
   static examples = [
-    `$ tw-insights hello
-hello world from ./src/hello.ts!
+    `$ tw-insights add-languages
+hello world from ./src/add-languages.ts!
 `,
   ]
 
@@ -18,7 +18,7 @@ hello world from ./src/hello.ts!
   static args = [{name: 'file'}]
 
   async run() {
-    const {args, flags} = this.parse(Hello)
+    const {args, flags} = this.parse(AddLanguages)
 
     const name = flags.name || 'world'
     this.log(`hello ${name} from ${__filename}!`)
