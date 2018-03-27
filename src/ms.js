@@ -11,6 +11,7 @@ const url = `https://${host}${path}`
 const pickDocuments = R.pipe(R.prop('data'), R.prop('documents'))
 const pickLanguages = R.pipe(pickDocuments, R.map(R.prop('detectedLanguages')))
 const pickSentiments = R.pipe(pickDocuments, R.map(R.prop('score')))
+const pickKeyPhrases = R.pipe(pickDocuments, R.map(R.prop('keyPhrases')))
 
 const getLanguages = data => {
   return axios
@@ -28,7 +29,16 @@ const getSentiments = data => {
     .then(pickSentiments)
 }
 
+const getKeyPhrases = data => {
+  return axios
+    .post(`${url}/keyPhrases`, data, {
+      headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
+    })
+    .then(pickKeyPhrases)
+}
+
 module.exports = {
   getLanguages,
   getSentiments,
+  getKeyPhrases,
 }
