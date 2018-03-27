@@ -35,11 +35,14 @@ const renameKeys = R.curry((keysMap, obj) =>
 )
 const renameId = renameKeys({ id_str: 'id' })
 const sanitize = R.pipe(R.pick(['id_str', 'text']), renameId)
+const maxScore = R.maxBy(R.prop('score'))
+const pickTopLanguage = R.reduce(maxScore, { score: 0 })
 
 const addLanguage = tweets => languagesForTweets => {
   return mapIndexed((tweet, idx) => {
     const languages = R.nth(idx, languagesForTweets)
-    return R.merge(tweet, { languages })
+    const language = pickTopLanguage(languages)
+    return R.merge(tweet, { language: language.name })
   }, tweets)
 }
 
