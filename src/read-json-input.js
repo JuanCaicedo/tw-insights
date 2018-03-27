@@ -1,20 +1,30 @@
-const oboe = require('oboe')
+const readline = require('readline')
+const Stream = new require('stream')
 
-const readJsonInput = (inputStream, max, cb) => {
+const readJsonInput = (input, max, cb) => {
+  const rl = readline.createInterface({
+    input,
+    output: Stream.Writable(),
+    terminal: false,
+  })
+
   let buffer = []
-  oboe(inputStream)
-    .node('{text}', tweet => {
+
+  rl.on('line', line => {
+    try {
+      const tweet = JSON.parse(line)
+
       buffer.push(tweet)
       if (buffer.length >= max) {
         cb(buffer)
         buffer = []
       }
-    })
-    .fail(err => {
+    } catch (err) {
       console.error('err', err)
-    })
+    }
+  })
 
-  inputStream.on('end', () => cb(buffer))
+  rl.on('close', () => cb(buffer))
 }
 
 module.exports = { readJsonInput }
