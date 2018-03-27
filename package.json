@@ -1,22 +1,67 @@
 {
   "name": "dt-tweets",
+  "description": "analyze a tweet archive",
   "version": "1.0.0",
-  "description": "",
-  "engines": {
-    "node": ">=8.9.4 <9.0"
+  "author": "Juan Caicedo",
+  "bin": {
+    "tw-insights": "./bin/run"
   },
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "bugs": "https://github.com/JuanCaicedo/tw-insights/issues",
   "dependencies": {
+    "@oclif/command": "^1.4.6",
+    "@oclif/config": "^1.3.62",
+    "@oclif/plugin-help": "^1.2.1",
     "axios": "^0.18.0",
     "bluebird": "^3.5.1",
     "glob": "^7.1.2",
     "ramda": "^0.25.0",
     "replay": "^2.1.4"
-  }
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.4.2",
+    "@oclif/test": "^1.0.1",
+    "@oclif/tslint": "^1.0.2",
+    "@types/chai": "^4.1.2",
+    "@types/mocha": "^5.0.0",
+    "@types/node": "^9.4.6",
+    "chai": "^4.1.2",
+    "globby": "^8.0.1",
+    "mocha": "^5.0.5",
+    "ts-node": "^5.0.1",
+    "tslib": "^1.9.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  },
+  "engines": {
+    "node": ">=8.9.4 <9.0"
+  },
+  "files": [
+    ".oclif.manifest.json",
+    "/bin",
+    "/lib"
+  ],
+  "homepage": "https://github.com/JuanCaicedo/tw-insights",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "tw-insights",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "JuanCaicedo/tw-insights",
+  "scripts": {
+    "build": "rm -rf lib && tsc",
+    "clean": "rm -f .oclif.manifest.json",
+    "lint": "tsc -p test --noEmit && tslint -p test -t stylish",
+    "postpublish": "npm run clean",
+    "posttest": "npm run lint",
+    "prepublishOnly": "npm run build && oclif-dev manifest",
+    "preversion": "npm run clean",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
 }
