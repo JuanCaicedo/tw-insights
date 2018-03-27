@@ -2,6 +2,7 @@ const R = require('ramda')
 
 const { loadAllTweets } = require('../src/load')
 const { getLanguages } = require('../src/ms')
+const { logErr } = require('../src/logging')
 
 const pickLanguage = R.map(R.prop('detectedLanguages'))
 const mapIndexed = R.addIndex(R.map)
@@ -15,14 +16,7 @@ const main = async () => {
     const languages = await getLanguages({ documents: tweets })
     console.log('languages', languages)
   } catch (err) {
-    if (err.response) {
-      console.error('err.response.data', err.response.data)
-    } else if (err.request) {
-      console.error('err.request', err.request)
-    } else {
-      console.error('err.message', err.message)
-      console.error('err.stack', err.stack)
-    }
+    logErr(err)
   }
 }
 
