@@ -1,6 +1,6 @@
 import {expect, test} from '@oclif/test'
 
-describe('add-languages', () => {
+describe.skip('add-languages', () => {
   test
   .stdout()
   .command(['add-languages'])
