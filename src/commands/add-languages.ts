@@ -3,8 +3,7 @@ import * as R from 'ramda'
 import { readJsonInput } from '../read-json-input'
 import { getLanguages } from '../ms'
 import { logErr } from '../logging'
-import { readJsonInput } from '../read-json-input'
-import { mapIndexed, toStdOut, renameKeys, pickTopScore } from '../utils'
+import { mapIndexed, renameKeys, pickTopScore } from '../utils'
 
 const renameId = renameKeys({ id_str: 'id' })
 const sanitize = R.pipe(R.pick(['id_str', 'text']), renameId)
@@ -23,7 +22,7 @@ export default class AddLanguages extends Command {
   static description = `Analyze tweets to determine its main language. Receives tweets as JSON from stdin. `
 
   static examples = [
-    `$ echo '{ text: "hello world" }' | tw-insights add-languages`,
+    `$ echo '{ "text": "hello world" }' | tw-insights add-languages`,
   ]
 
   toStdOut = msg => R.pipe(JSON.stringify, this.log)(msg)
