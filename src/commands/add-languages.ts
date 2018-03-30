@@ -31,7 +31,7 @@ export default class AddLanguages extends Command {
 
   async run() {
     process.stdout.on('error', () => {})
-    readJsonInput(process.stdin, 100, tweets => {
+    readJsonInput(process.stdin, 1000, tweets => {
       const sanitized = R.map(sanitize, tweets)
       getLanguages({ documents: sanitized })
         .then(addLanguage(tweets))
