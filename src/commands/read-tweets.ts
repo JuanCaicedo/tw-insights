@@ -17,6 +17,8 @@ export default class ReadTweets extends Command {
     },
   ]
 
+  toStdOut = msg => R.pipe(JSON.stringify, this.log)(msg)
+
   async run() {
     process.stdout.on('error', () => {})
     const { args } = this.parse(ReadTweets)
@@ -26,6 +28,6 @@ export default class ReadTweets extends Command {
       ? path.join(pathToArchive, '/data/js/tweets/*.js')
       : path.join(process.cwd(), pathToArchive, '/data/js/tweets/*.js')
     const rawTweets = await loadAllTweets(tweetPath)
-    R.map(tweet => this.log(JSON.stringify(tweet)), rawTweets)
+    R.map(this.toStdOut, rawTweets)
   }
 }
