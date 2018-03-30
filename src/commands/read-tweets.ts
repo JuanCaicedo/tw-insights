@@ -20,7 +20,6 @@ export default class ReadTweets extends Command {
   toStdOut = msg => R.pipe(JSON.stringify, this.log)(msg)
 
   async run() {
-    process.stdout.on('error', () => {})
     const { args } = this.parse(ReadTweets)
     const pathToArchive = args['path-to-archive']
 

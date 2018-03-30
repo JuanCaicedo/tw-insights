@@ -29,7 +29,6 @@ export default class AddSentiment extends Command {
   toStdOut = msg => R.pipe(JSON.stringify, this.log)(msg)
 
   async run() {
-    process.stdout.on('error', () => {})
     readJsonInput(process.stdin, 1000, tweets => {
       const sanitized = R.map(sanitize, tweets)
       getSentiments({ documents: sanitized })
