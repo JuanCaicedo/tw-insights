@@ -18,6 +18,7 @@ export default class ReadTweets extends Command {
   ]
 
   async run() {
+    process.stdout.on('error', () => {})
     const { args } = this.parse(ReadTweets)
     const pathToArchive = args['path-to-archive']
 
