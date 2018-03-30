@@ -1,19 +1,21 @@
 import { Command, flags } from '@oclif/command'
 import * as R from 'ramda'
 import { readJsonInput } from '../read-json-input'
+import {
+  mapIndexed,
+  renameKeys,
+  pickTopScore,
+  renameId,
+  sanitize,
+} from '../utils'
 import { getLanguages } from '../ms'
 import { logErr } from '../logging'
 import { mapIndexed, renameKeys, pickTopScore } from '../utils'
 
-const renameId = renameKeys({ id_str: 'id' })
-const sanitize = R.pipe(R.pick(['id_str', 'text']), renameId)
-const maxScore = R.maxBy(R.prop('score'))
-const pickTopLanguage = R.reduce(maxScore, { score: 0 })
-
 const addLanguage = tweets => languagesForTweets => {
   return mapIndexed((tweet, idx) => {
     const languages = R.nth(idx, languagesForTweets)
-    const language = pickTopLanguage(languages)
+    const language = pickTopScore(languages)
     return R.merge(tweet, { language: language.name })
   }, tweets)
 }

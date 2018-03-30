@@ -1,4 +1,5 @@
 const R = require('ramda')
+const LANGS = require('./langs')
 
 const mapIndexed = R.addIndex(R.map)
 const renameKeys = R.curry((keysMap, obj) =>
@@ -8,15 +9,22 @@ const renameKeys = R.curry((keysMap, obj) =>
     R.keys(obj)
   )
 )
-const toStdOut = R.pipe(JSON.stringify, console.log)
 const maxScore = R.maxBy(R.prop('score'))
 const pickTopScore = R.reduce(maxScore, { score: 0 })
 const isAbsolutePath = R.test(/^\//)
 
+const renameId = renameKeys({ id_str: 'id' })
+const mapLang = obj => R.merge(obj, { language: LANGS[obj.language] })
+const sanitize = R.pipe(
+  R.pick(['id_str', 'text', 'language']),
+  renameId,
+  mapLang
+)
 module.exports = {
   mapIndexed,
-  toStdOut,
   renameKeys,
   pickTopScore,
   isAbsolutePath,
+  renameId,
+  sanitize,
 }
