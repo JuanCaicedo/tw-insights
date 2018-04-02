@@ -37,29 +37,28 @@ export default class RunAll extends Command {
     const tweetPath = isAbsolutePath(pathToArchive)
       ? path.join(pathToArchive, '/data/js/tweets/*.js')
       : path.join(process.cwd(), pathToArchive, '/data/js/tweets/*.js')
-    const rawTweets = await loadAllTweets(tweetPath)
-    const sanitized = R.map(sanitize, rawTweets)
-    const batches = intoBatches(sanitized)
-    const languageBatches = await Bluebird.map(batches, batch =>
-      getLanguages({ documents: batch })
-    )
-    const withLanguage = addLanguage(rawTweets)(R.unnest(languageBatches))
-    const langBatches = intoBatches(R.map(sanitize, withLanguage))
-    const sentimentBatches = await Bluebird.map(langBatches, batch =>
-      getSentiments({ documents: batch })
-    )
-    const withSentiment = addSentiment(withLanguage)(
-      R.flatten(sentimentBatches)
-    )
-    const keyPhraseBatches = await Bluebird.map(langBatches, batch =>
-      getKeyPhrases({ documents: batch })
-    )
-    const withKeyPhrase = addKeyPhrases(withSentiment)(
-      R.unnest(keyPhraseBatches)
-    )
 
-    const result = withKeyPhrase
+    try {
+      const rawTweets = await loadAllTweets(tweetPath)
+      const batches = intoBatches(rawTweets)
+      const languageBatches = await Bluebird.map(batches, getLanguages)
+      const withLanguage = addLanguage(rawTweets)(R.unnest(languageBatches))
+      const langBatches = intoBatches(withLanguage)
+      const sentimentBatches = await Bluebird.map(langBatches, getSentiments)
+      const withSentiment = addSentiment(withLanguage)(
+        R.flatten(sentimentBatches)
+      )
+      const keyPhraseBatches = await Bluebird.map(langBatches, getKeyPhrases)
+      const withKeyPhrase = addKeyPhrases(withSentiment)(
+        R.unnest(keyPhraseBatches)
+      )
 
-    R.map(this.toStdOut, result)
+      const result = withKeyPhrase
+
+      R.map(this.toStdOut, result)
+    } catch (err) {
+      this.log(err)
+      this.error(err.message)
+    }
   }
 }
