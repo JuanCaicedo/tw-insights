@@ -42,14 +42,16 @@ export default class RunAll extends Command {
       const rawTweets = await loadAllTweets(tweetPath)
       const batches = intoBatches(rawTweets)
       const languageBatches = await Bluebird.map(batches, getLanguages)
-      const withLanguage = addLanguage(rawTweets)(R.unnest(languageBatches))
+      const withLanguage = addLanguage(rawTweets, R.unnest(languageBatches))
       const langBatches = intoBatches(withLanguage)
       const sentimentBatches = await Bluebird.map(langBatches, getSentiments)
-      const withSentiment = addSentiment(withLanguage)(
+      const withSentiment = addSentiment(
+        withLanguage,
         R.flatten(sentimentBatches)
       )
       const keyPhraseBatches = await Bluebird.map(langBatches, getKeyPhrases)
-      const withKeyPhrase = addKeyPhrases(withSentiment)(
+      const withKeyPhrase = addKeyPhrases(
+        withSentiment,
         R.unnest(keyPhraseBatches)
       )
 

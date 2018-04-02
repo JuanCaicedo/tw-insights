@@ -21,25 +21,26 @@ const sanitize = R.pipe(
   mapLang
 )
 
-const addLanguage = tweets => languagesForTweets => {
+const addLanguage = R.curry((tweets, languagesForTweets) => {
   return mapIndexed((tweet, idx) => {
     const languages = R.nth(idx, languagesForTweets)
     const language = pickTopScore(languages)
     return R.merge(tweet, { language: language.name })
   }, tweets)
-}
-const addSentiment = tweets => sentimentsForTweets => {
+})
+
+const addSentiment = R.curry((tweets, sentimentsForTweets) => {
   return mapIndexed((tweet, idx) => {
     const sentiment = R.nth(idx, sentimentsForTweets)
     return R.merge(tweet, { sentiment })
   }, tweets)
-}
-const addKeyPhrases = tweets => keyPhrasesForTweets => {
+})
+const addKeyPhrases = R.curry((tweets, keyPhrasesForTweets) => {
   return mapIndexed((tweet, idx) => {
     const keyPhrases = R.nth(idx, keyPhrasesForTweets)
     return R.merge(tweet, { keyPhrases })
   }, tweets)
-}
+})
 
 module.exports = {
   mapIndexed,
