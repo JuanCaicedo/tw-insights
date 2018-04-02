@@ -20,6 +20,15 @@ const sanitize = R.pipe(
   renameId,
   mapLang
 )
+
+const addLanguage = tweets => languagesForTweets => {
+  return mapIndexed((tweet, idx) => {
+    const languages = R.nth(idx, languagesForTweets)
+    const language = pickTopScore(languages)
+    return R.merge(tweet, { language: language.name })
+  }, tweets)
+}
+
 module.exports = {
   mapIndexed,
   renameKeys,
@@ -27,4 +36,5 @@ module.exports = {
   isAbsolutePath,
   renameId,
   sanitize,
+  addLanguage,
 }
