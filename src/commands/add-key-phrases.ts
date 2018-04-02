@@ -9,7 +9,7 @@ export default class AddSentiment extends Command {
   static description = `Analyze tweets to determine key phrases. Receives tweets as JSON from stdin. `
 
   static examples = [
-    `$ echo '{ "text": "hello world", "language": "English" }' | tw-insights add-sentiment`,
+    `$ echo '{ "text": "hello world", "language": "English", "id_str": 1 }' | tw-insights add-key-phrases`,
   ]
 
   toStdOut = msg => R.pipe(JSON.stringify, this.log)(msg)
