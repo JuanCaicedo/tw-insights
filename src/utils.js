@@ -34,6 +34,12 @@ const addSentiment = tweets => sentimentsForTweets => {
     return R.merge(tweet, { sentiment })
   }, tweets)
 }
+const addKeyPhrases = tweets => keyPhrasesForTweets => {
+  return mapIndexed((tweet, idx) => {
+    const keyPhrases = R.nth(idx, keyPhrasesForTweets)
+    return R.merge(tweet, { keyPhrases })
+  }, tweets)
+}
 
 module.exports = {
   mapIndexed,
@@ -44,4 +50,5 @@ module.exports = {
   sanitize,
   addLanguage,
   addSentiment,
+  addKeyPhrases,
 }
