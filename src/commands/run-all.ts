@@ -1,6 +1,7 @@
 import { Command } from '@oclif/command'
 import * as R from 'ramda'
 import * as path from 'path'
+import * as Bluebird from 'bluebird'
 import {
   isAbsolutePath,
   sanitize,
@@ -13,18 +14,6 @@ import { getLanguages, getSentiments, getKeyPhrases } from '../ms'
 
 const MAX_MS_BODY_SIZE = 1000
 const intoBatches = R.splitEvery(MAX_MS_BODY_SIZE)
-const getLanguagesOne = R.pipe(R.map(sanitize), sanitized =>
-  getLanguages({ documents: sanitized })
-)
-const getLanguagesAll = R.map(getLanguagesOne)
-const getSentimentsOne = R.pipe(R.map(sanitize), sanitized =>
-  getSentiments({ documents: sanitized })
-)
-const getSentimentsAll = R.map(getSentimentsOne)
-const getKeyPhrasesOne = R.pipe(R.map(sanitize), sanitized =>
-  getKeyPhrases({ documents: sanitized })
-)
-const getKeyPhrasesAll = R.map(getKeyPhrasesOne)
 
 export default class RunAll extends Command {
   static description = 'Run all MS azure text analysis tasks on a tweet archive'
@@ -49,15 +38,22 @@ export default class RunAll extends Command {
       ? path.join(pathToArchive, '/data/js/tweets/*.js')
       : path.join(process.cwd(), pathToArchive, '/data/js/tweets/*.js')
     const rawTweets = await loadAllTweets(tweetPath)
-    const batches = intoBatches(rawTweets)
-    const languageBatches = await Promise.all(getLanguagesAll(batches))
+    const sanitized = R.map(sanitize, rawTweets)
+    const batches = intoBatches(sanitized)
+    const languageBatches = await Bluebird.map(batches, batch =>
+      getLanguages({ documents: batch })
+    )
     const withLanguage = addLanguage(rawTweets)(R.unnest(languageBatches))
-    const langBatches = intoBatches(withLanguage)
-    const sentimentBatches = await Promise.all(getSentimentsAll(langBatches))
+    const langBatches = intoBatches(R.map(sanitize, withLanguage))
+    const sentimentBatches = await Bluebird.map(langBatches, batch =>
+      getSentiments({ documents: batch })
+    )
     const withSentiment = addSentiment(withLanguage)(
       R.flatten(sentimentBatches)
     )
-    const keyPhraseBatches = await Promise.all(getKeyPhrasesAll(langBatches))
+    const keyPhraseBatches = await Bluebird.map(langBatches, batch =>
+      getKeyPhrases({ documents: batch })
+    )
     const withKeyPhrase = addKeyPhrases(withSentiment)(
       R.unnest(keyPhraseBatches)
     )
