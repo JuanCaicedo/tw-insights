@@ -28,6 +28,12 @@ const addLanguage = tweets => languagesForTweets => {
     return R.merge(tweet, { language: language.name })
   }, tweets)
 }
+const addSentiment = tweets => sentimentsForTweets => {
+  return mapIndexed((tweet, idx) => {
+    const sentiment = R.nth(idx, sentimentsForTweets)
+    return R.merge(tweet, { sentiment })
+  }, tweets)
+}
 
 module.exports = {
   mapIndexed,
@@ -37,4 +43,5 @@ module.exports = {
   renameId,
   sanitize,
   addLanguage,
+  addSentiment,
 }

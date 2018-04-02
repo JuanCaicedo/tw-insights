@@ -1,23 +1,10 @@
 import { Command, flags } from '@oclif/command'
 import * as R from 'ramda'
 import { readJsonInput } from '../read-json-input'
-import {
-  mapIndexed,
-  renameKeys,
-  pickTopScore,
-  renameId,
-  sanitize,
-} from '../utils'
+import { sanitize, addSentiment } from '../utils'
 import { logErr } from '../logging'
 import { getSentiments } from '../ms'
 import * as LANGS from '../langs'
-
-const addSentiment = tweets => sentimentsForTweets => {
-  return mapIndexed((tweet, idx) => {
-    const sentiment = R.nth(idx, sentimentsForTweets)
-    return R.merge(tweet, { sentiment })
-  }, tweets)
-}
 
 export default class AddSentiment extends Command {
   static description = `Analyze tweets to determine the sentiment. Receives tweets as JSON from stdin. `
