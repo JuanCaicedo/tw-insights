@@ -48,11 +48,9 @@
     "commands": "./lib/commands",
     "bin": "tw-insights",
     "plugins": [
-      "@oclif/plugin-help"
-    ],
-    "hooks": {
-      "init": "./lib/hooks/init/add-pipe-errors"
-    }
+      "@oclif/plugin-help",
+      "no-stdout-epipe-errors"
+    ]
   },
   "repository": "JuanCaicedo/tw-insights",
   "scripts": {
