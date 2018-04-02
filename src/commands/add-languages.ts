@@ -1,17 +1,9 @@
 import { Command, flags } from '@oclif/command'
 import * as R from 'ramda'
 import { readJsonInput } from '../read-json-input'
-import {
-  mapIndexed,
-  renameKeys,
-  pickTopScore,
-  renameId,
-  sanitize,
-  addLanguage,
-} from '../utils'
+import { sanitize, addLanguage } from '../utils'
 import { getLanguages } from '../ms'
 import { logErr } from '../logging'
-import { mapIndexed, renameKeys, pickTopScore } from '../utils'
 
 export default class AddLanguages extends Command {
   static description = `Analyze tweets to determine its main language. Receives tweets as JSON from stdin. `
