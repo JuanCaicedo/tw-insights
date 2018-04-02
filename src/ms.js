@@ -1,6 +1,5 @@
 const axios = require('axios')
 const R = require('ramda')
-const Bluebird = require('bluebird')
 const replay = require('replay')
 
 const { sanitize, mapIndexed } = require('./utils')
@@ -19,35 +18,29 @@ const prepareDocument = mapIndexed(sanitize)
 const dataToDocuments = data => ({ documents: data })
 const prepareData = R.pipe(prepareDocument, dataToDocuments)
 
-const getLanguages = data => {
-  return Bluebird.resolve(prepareData(data))
-    .then(prepared =>
-      axios.post(`${url}/languages`, prepared, {
-        headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
-      })
-    )
+const getLanguages = R.pipe(prepareData, prepared =>
+  axios
+    .post(`${url}/languages`, prepared, {
+      headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
+    })
     .then(pickLanguages)
-}
+)
 
-const getSentiments = data => {
-  return Bluebird.resolve(prepareData(data))
-    .then(prepared =>
-      axios.post(`${url}/sentiment`, prepared, {
-        headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
-      })
-    )
+const getSentiments = R.pipe(prepareData, prepared =>
+  axios
+    .post(`${url}/sentiment`, prepared, {
+      headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
+    })
     .then(pickSentiments)
-}
+)
 
-const getKeyPhrases = data => {
-  return Bluebird.resolve(prepareData(data))
-    .then(prepared =>
-      axios.post(`${url}/keyPhrases`, prepared, {
-        headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
-      })
-    )
+const getKeyPhrases = R.pipe(prepareData, prepared =>
+  axios
+    .post(`${url}/keyPhrases`, prepared, {
+      headers: { 'Ocp-Apim-Subscription-Key': MS_ACCESS_KEY },
+    })
     .then(pickKeyPhrases)
-}
+)
 
 module.exports = {
   getLanguages,
