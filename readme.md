@@ -1,77 +1,42 @@
-tw-insights
-=========
+# tw-insights
 
 Analyze a tweet archive using Microsoft Azure's text analytics services.
 
-[![Version](https://img.shields.io/npm/v/tw-insights.svg)](https://npmjs.org/package/tw-insights)
-[![CircleCI](https://circleci.com/gh/JuanCaicedo/tw-insights/tree/master.svg?style=shield)](https://circleci.com/gh/JuanCaicedo/tw-insights/tree/master)
-[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/JuanCaicedo/tw-insights?branch=master&svg=true)](https://ci.appveyor.com/project/JuanCaicedo/tw-insights/branch/master)
-[![Codecov](https://codecov.io/gh/JuanCaicedo/tw-insights/branch/master/graph/badge.svg)](https://codecov.io/gh/JuanCaicedo/tw-insights)
-[![Downloads/week](https://img.shields.io/npm/dw/tw-insights.svg)](https://npmjs.org/package/tw-insights)
-[![License](https://img.shields.io/npm/l/tw-insights.svg)](https://github.com/JuanCaicedo/tw-insights/blob/master/package.json)
+## Getting data
 
-<!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
-# Usage
-<!-- usage -->
-```sh-session
-$ npm install -g tw-insights
-$ tw-insights COMMAND
-running command...
-$ tw-insights (-v|--version|version)
-tw-insights/1.0.0 darwin-x64 node-v8.9.4
-$ tw-insights --help [COMMAND]
-USAGE
-  $ tw-insights COMMAND
-...
-```
-<!-- usagestop -->
-# Commands
-<!-- commands -->
-* [tw-insights read-tweets [FILE]](#tw-insights-hello-file)
-* [tw-insights  [FILE]](#tw-insights-hello-file)
-* [tw-insights help [COMMAND]](#tw-insights-help-command)
+You will need to get an archive tweets to analyze. The easiest way to do that is
+to get your own archive from can do that at https://twitter.com/settings/account
 
-## tw-insights hello [FILE]
+## Microsoft Azure credentials
 
-describe the command here
+You will need to create a Microsoft Azure account, enable Cognitive Services and
+then place your API key in `secrets.js`. More instructions can be found here:
+https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-signup
 
-```
-USAGE
-  $ tw-insights hello [FILE]
+## How to run
 
-OPTIONS
-  -f, --force
-  -n, --name=name  name to print
+There are two ways to run this tool
 
-EXAMPLE
-  $ tw-insights hello
-  hello world from ./src/hello.ts!
+##### Top-level command
+
+```bash
+$ tw-insights run-all [path-to-archive]
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/JuanCaicedo/tw-insights/blob/v1.0.0/src/commands/hello.ts)_
+This will read all the tweets in the archive and run them through all the
+analysis steps. In doing so, it will split the tweets into batches of 1000 to
+respect Azure's upload limit. The tool does nothing else to manage rate
+limiting, so you might hit errors if you analyze a lot of data at once.
 
-## tw-insights help [COMMAND]
+##### Individually run steps
 
-display help for tw-insights
-
-```
-USAGE
-  $ tw-insights help [COMMAND]
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
+```bash
+$ tw-insights read-tweets [path-to-archive] | tw-insights add-languages | tw-insights add-sentiment | tw-insights add-key-phrases
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v1.2.1/src/commands/help.ts)_
-<!-- commandsstop -->
-
-## data
-
-You need to get a data dump of all your tweets and place it in `./tw-data`. You
-can do that at https://twitter.com/settings/account
+The individual commands have all been built to read tweets from stdin as new
+line delimited JSON. The results of one command can be pipe into another, and
+the tool will automatically batch them into groups of 1000 per request to
+respect Azure's upload limits. This approach may lead to better performance on
+large datasets. Note that sentiment and key phrases analyses require a language
+to be set, which language analysis step provides.
