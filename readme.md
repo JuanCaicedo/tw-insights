@@ -1,14 +1,14 @@
-dt-tweets
+tw-insights
 =========
 
-analyze a tweet archive
+Analyze a tweet archive using Microsoft Azure's text analytics services.
 
-[![Version](https://img.shields.io/npm/v/dt-tweets.svg)](https://npmjs.org/package/dt-tweets)
-[![CircleCI](https://circleci.com/gh/JuanCaicedo/dt-tweets/tree/master.svg?style=shield)](https://circleci.com/gh/JuanCaicedo/dt-tweets/tree/master)
-[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/JuanCaicedo/dt-tweets?branch=master&svg=true)](https://ci.appveyor.com/project/JuanCaicedo/dt-tweets/branch/master)
-[![Codecov](https://codecov.io/gh/JuanCaicedo/dt-tweets/branch/master/graph/badge.svg)](https://codecov.io/gh/JuanCaicedo/dt-tweets)
-[![Downloads/week](https://img.shields.io/npm/dw/dt-tweets.svg)](https://npmjs.org/package/dt-tweets)
-[![License](https://img.shields.io/npm/l/dt-tweets.svg)](https://github.com/JuanCaicedo/dt-tweets/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/tw-insights.svg)](https://npmjs.org/package/tw-insights)
+[![CircleCI](https://circleci.com/gh/JuanCaicedo/tw-insights/tree/master.svg?style=shield)](https://circleci.com/gh/JuanCaicedo/tw-insights/tree/master)
+[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/JuanCaicedo/tw-insights?branch=master&svg=true)](https://ci.appveyor.com/project/JuanCaicedo/tw-insights/branch/master)
+[![Codecov](https://codecov.io/gh/JuanCaicedo/tw-insights/branch/master/graph/badge.svg)](https://codecov.io/gh/JuanCaicedo/tw-insights)
+[![Downloads/week](https://img.shields.io/npm/dw/tw-insights.svg)](https://npmjs.org/package/tw-insights)
+[![License](https://img.shields.io/npm/l/tw-insights.svg)](https://github.com/JuanCaicedo/tw-insights/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -17,11 +17,11 @@ analyze a tweet archive
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g dt-tweets
+$ npm install -g tw-insights
 $ tw-insights COMMAND
 running command...
 $ tw-insights (-v|--version|version)
-dt-tweets/1.0.0 darwin-x64 node-v8.9.4
+tw-insights/1.0.0 darwin-x64 node-v8.9.4
 $ tw-insights --help [COMMAND]
 USAGE
   $ tw-insights COMMAND
@@ -30,7 +30,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [tw-insights hello [FILE]](#tw-insights-hello-file)
+* [tw-insights read-tweets [FILE]](#tw-insights-hello-file)
+* [tw-insights  [FILE]](#tw-insights-hello-file)
 * [tw-insights help [COMMAND]](#tw-insights-help-command)
 
 ## tw-insights hello [FILE]
