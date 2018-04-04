@@ -2,6 +2,10 @@
 
 Analyze a tweet archive using Microsoft Azure's text analytics services.
 
+## Installation
+
+You will need node > v8.9.x installed. After that run `npm install -g tw-insights`.
+
 ## Getting data
 
 You will need to get an archive tweets to analyze. The easiest way to do that is
