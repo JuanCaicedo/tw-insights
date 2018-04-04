@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "module": "commonjs",
@@ -11,7 +10,8 @@
     ],
     "strict": true,
     "target": "es2017",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "allowJs": true
   },
   "include": [
     "./src/**/*"
