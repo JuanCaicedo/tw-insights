@@ -2,7 +2,9 @@ const axios = require('axios')
 const R = require('ramda')
 
 const { sanitize, mapIndexed } = require('./utils')
-const { MS_ACCESS_KEY } = require('../secrets')
+
+require('dotenv').config()
+const { MS_ACCESS_KEY } = process.env
 
 const host = 'westus.api.cognitive.microsoft.com'
 const path = '/text/analytics/v2.0'

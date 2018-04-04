@@ -10,7 +10,12 @@ to get your own archive from can do that at https://twitter.com/settings/account
 ## Microsoft Azure credentials
 
 You will need to create a Microsoft Azure account, enable Cognitive Services and
-then place your API key in `secrets.js`. More instructions can be found here:
+then place your API key in a `.env` file like so:
+```
+MS_ACCESS_KEY=access-key-value
+```
+
+More instructions can be found here:
 https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-signup
 
 ## How to run
