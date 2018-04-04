@@ -19,15 +19,11 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.4.2",
-    "@oclif/test": "^1.0.1",
     "@types/bluebird": "^3.5.20",
-    "@types/chai": "^4.1.2",
-    "@types/mocha": "^5.0.0",
     "@types/node": "^9.4.6",
     "@types/ramda": "^0.25.21",
     "chai": "^4.1.2",
     "globby": "^8.0.1",
-    "mocha": "^5.0.5",
     "ts-node": "^5.0.1",
     "tslib": "^1.9.0",
     "typescript": "^2.7.2"
@@ -61,7 +57,7 @@
     "postpublish": "npm run clean",
     "prepublishOnly": "npm run build && oclif-dev manifest",
     "preversion": "npm run clean",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "echo 'No tests'",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"
